@@ -1,14 +1,19 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    // Do logic
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.table({ name, email, password });
+    const { data } = await axios.post("http://localhost:8000/api/register", {
+      name,
+      email,
+      password,
+    });
+    console.log("Register data: ", data);
   };
   return (
     <>
@@ -39,7 +44,7 @@ function Register() {
             placeholder="Enter password"
             required
           />
-          <button type="submit" className="btn btn-block btn-primary">
+          <button type="submit" className="btn btn-block btn-primary w-100">
             Sign up
           </button>
         </form>

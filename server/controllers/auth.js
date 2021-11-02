@@ -1,3 +1,4 @@
 export const register = (req, res) => {
-  res.send("This is register page");
+  console.log(req.body);
+  res.json("This is register page");
 };
