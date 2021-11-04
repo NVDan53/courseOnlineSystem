@@ -1,19 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { SyncOutlined } from "@ant-design/icons";
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await axios.post("http://localhost:8000/api/register", {
-      name,
-      email,
-      password,
-    });
-    console.log("Register data: ", data);
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      toast.success("Regiter successfully");
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.response.data);
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -44,8 +57,13 @@ function Register() {
             placeholder="Enter password"
             required
           />
-          <button type="submit" className="btn btn-block btn-primary w-100">
-            Sign up
+          <button
+            type="submit"
+            className="btn btn-block btn-primary w-100"
+            disabled={!name || !email || !password || loading}
+            // autofocus
+          >
+            {loading ? <SyncOutlined spin /> : "Submit"}
           </button>
         </form>
       </div>
