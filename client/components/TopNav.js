@@ -22,11 +22,12 @@ import { Context } from "../context";
 
 const TopNav = () => {
   const [current, setCurrent] = useState("");
-  const { Item, SubMenu } = Menu;
   const { state, dispatch } = useContext(Context);
   const { user } = state;
 
   const router = useRouter();
+
+  const { Item, SubMenu, ItemGroup } = Menu;
 
   useEffect(() => {
     process.browser && setCurrent(window.location.pathname);
@@ -79,17 +80,21 @@ const TopNav = () => {
 
       {user !== null && (
         <SubMenu
+          key="/logout"
           icon={<CoffeeOutlined />}
           title={user && user.name}
           className="float-right"
         >
-          <Item
-            onClick={logout}
-            icon={<LogoutOutlined />}
-            className="float-right"
-          >
-            Logout
-          </Item>
+          <ItemGroup>
+            <Item key="/user">
+              <Link href="/user">
+                <a>Dashboard</a>
+              </Link>
+            </Item>
+            <Item onClick={logout} icon={<LogoutOutlined />}>
+              Logout
+            </Item>
+          </ItemGroup>
         </SubMenu>
       )}
     </Menu>
